@@ -19,7 +19,7 @@ Make sure Azure is set up correctly and have active subscription.
 
 ![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/35d66370-70ea-425e-996b-c6f235f04a9d)
 
-## Cost Management 
+### Cost Management 
 AppSculpt aims to expand ReadRadar globally and support multiple languages, along with other data-driven apps. Starting with a basic setup in this case study, future plans involve leveraging Azure extensively. The proposed solution involves Azure Databricks and Azure Machine Learning for advanced analytics, similar to the 'Advanced Analytics on Big Data' scenario in the Pricing Calculator but without Power BI integration.
 
 ![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/4f2f8ae7-7d8f-4d73-8505-82e3fdf6e002)
@@ -41,7 +41,7 @@ In Example scenarios, add the Advanced analytics on big data scenario to the est
 
 The total cost per month is less than 20,000 USD.
 
-## Storage Accounts and Virtual Machines
+### Setting Up Storage Account
 
 A storage account is needed for data ingestion, enabling storage and processing of book data. Necessary data for the recommendation model is collected and stored. These data include for example book metadata, user read history, book reviews, and ratings. The data are cleaned and prepared for the next step. A virtual machine will host and run the recommendation model, providing a secure environment for the data science team to conduct testing and development.
 
@@ -62,4 +62,81 @@ Data architect has given specific requirements for creation of the storage accou
 - Locally redundant storage is needed
 - All resources need to be assigned to the East US Region
 
+### Uploading Dataset
+Created a new container and uploaded the csv file (book dataset) to the container.
 ![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/d6999f6c-285a-4ce3-a15a-1cb6168527dc)
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/47d55170-d11b-458d-8526-48919e1353ca)
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/871a11af-684a-47b4-a93b-a5daea288f5a)
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/b3a4821f-750f-4dd1-aa93-c116cbb2d1c5)
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/22633955-121f-4698-b110-c0f4f0f0b161)
+
+### Setting Up Virtual Machine
+The virtual machine that needed to be set up is the data science virtual machine (DSVM). Data science team will make use of the DSVM to run and test the recommendation model. In addition, the data architect informed the DSVM needs to comply with specific security and management requirements.
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/c6be3c25-edcf-45cc-9eea-5fafaa3f2bdb)
+
+Set the image, as it will change which settings are available. The DSVM is not one of the default images. Use See all images and find the right one. 
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/c25c3300-8400-4bc4-80ba-6a3bd69cdff2)
+
+Choose the correct size in the resource creation window. Take into account the specifications of the data science team:
+-The DSVM version needs to be Windows Server 2022 x64 Gen 1
+-Size needs to be DS1 v2 (1 vCPU, 3.5 GiB memory)
+-Go to the right tab to change disk size to 128 GiB
+-Also make sure disk type is set to standard locally-redundant storage
+
+Configure the virtual machine according to the requirements specified by the data architect:
+-Assign the VM to a resource group
+-Give the resource a suitable name
+-Set the Region to East US
+
+Set the required security settings:
+-Set security type to Standard
+-Set a username and password combination of your choice
+-Go to the right tab to set the public IP setting to 'None'
+-Create the VM.
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/2190be9e-a176-4f63-bfdc-025005b72077)
+The data science team would like to make use of the Auto-shutdown feature during development and testing of the recommendation model. This feature automatically stops the VM when it is not needed (e.g. outside of office hours) to help reduce costs. Can find the Auto-shutdown setting in the Overview screen, in the Properties tab, right column.
+
+## Resources Tracking with Tagging
+To keep track of the resources for the ReadRadar project when other projects are also added to Azure, add tags to all resources related to the project. In addition, the DSVM will be managed by the data science team, need to add a tag specifically to the DSVM to identify the data science team as the resource owner.
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/6c88f3ca-e49e-4230-aa40-76936e9abacc)
+
+Go to Resource groups. Select the resource group starting with 'student-' and assign the following tag: "Project":"ReadRadar". Go back to Home and navigate to overview screen of the DSVM. Assign the tag "Team":"Data Science" to the DSVM. Navigate to Tags from the Home screen and check to which resources the Project:ReadRadar tag was applied to. Do the same for the tag starting with costID.
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/8567156d-d78c-4553-8ffd-04dc751228e4)
+
+### Management and Monitoring Tools
+Optimizing security and performance for the ReadRadar app by making use of the management and monitoring tools in Azure. Tools in Azure such as role-based access, Policy, and Monitor are used to ensure appropriate security and data protection is in place, and also make sure the app performance is optimized.
+
+### Setting Up Policy 
+Azure Policy is the tool for defining and enforcing policies across Azure resources. It is especially useful to ensure adherence to the standards of AppSculpt, ReadRadar's company, and the applicable regulatory requirements. Azure Policy has a different purpose than RBAC. While Azure Policy is used to define rules for resources, RBAC is used to define rules for user roles.
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/e4288f3c-ecbd-47c5-acfa-97a651d975aa)
+Go to the right service to create policies. Find the policy assignment that requires tags on resource groups.
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/9f7d7ad4-b8e1-40da-9db4-25913fd75a2e)
+Assign the student- resource group to the scope. Set up the policy parameters to make sure a "project" tag is alway set . Leave all other settings to their default value. Create the policy.
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/bc546623-a4b3-4764-9f00-b188c5eee2e4)
+Error : Microsoft.Authorization/PolicyAssignments/write 
+Don't have the right permission to create policy assignments. Remedy is to look up RBAC permissions.
+
+## RBAC Permission
+Weren't able to set up a policy due to a permission error. This is a common problem with RBAC and the principle of least privilege: assigned role and permissions need to be in line with actual role and responsibilities. Best to check assigned role and its associated permissions to make sure consistent with tasks, or if there is need to apply for a new role.
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/bf3bb954-3f42-44cf-8083-45d1143b33b4)
+
+Go to the resource group starting with student-. View level of access to the resource. View the list of permissions for the Contributor role.
+Search for "policy assignment" and check the list of permissions under Microsoft.Authorization.
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/da0bb5e4-125d-4a2c-929d-4aa37403aa35)
+
+Permissions under _Type_ for Microsoft.Authorization_ is contributor and the role does not have the right permissions to set up policies. 1) Ask admin to set up policies. 2) Have to ask admin to set up the right role, delegate the task to someone with the right role.
+
