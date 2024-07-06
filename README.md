@@ -79,7 +79,9 @@ The virtual machine that needed to be set up is the data science virtual machine
 
 ![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/c6be3c25-edcf-45cc-9eea-5fafaa3f2bdb)
 
-Set the image, as it will change which settings are available. The DSVM is not one of the default images. Use See all images and find the right one. 
+Set the image, as it will change which settings are available. 
+The DSVM is not one of the default images. 
+Use See all images and find the right one. 
 
 ![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/c25c3300-8400-4bc4-80ba-6a3bd69cdff2)
 
@@ -108,7 +110,12 @@ To keep track of the resources for the ReadRadar project when other projects are
 
 ![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/6c88f3ca-e49e-4230-aa40-76936e9abacc)
 
-Go to Resource groups. Select the resource group starting with 'student-' and assign the following tag: "Project":"ReadRadar". Go back to Home and navigate to overview screen of the DSVM. Assign the tag "Team":"Data Science" to the DSVM. Navigate to Tags from the Home screen and check to which resources the Project:ReadRadar tag was applied to. Do the same for the tag starting with costID.
+Go to Resource groups.
+Select the resource group starting with 'student-' and assign the following tag: "Project":"ReadRadar". 
+Go back to Home and navigate to overview screen of the DSVM.
+Assign the tag "Team":"Data Science" to the DSVM. 
+Navigate to Tags from the Home screen and check to which resources the Project:ReadRadar tag was applied to. 
+Do the same for the tag starting with costID.
 
 ![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/8567156d-d78c-4553-8ffd-04dc751228e4)
 
@@ -138,5 +145,41 @@ Search for "policy assignment" and check the list of permissions under Microsoft
 
 ![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/da0bb5e4-125d-4a2c-929d-4aa37403aa35)
 
-Permissions under _Type_ for Microsoft.Authorization_ is contributor and the role does not have the right permissions to set up policies. 1) Ask admin to set up policies. 2) Have to ask admin to set up the right role, delegate the task to someone with the right role.
+Permissions under _Type_ for Microsoft.Authorization_ is contributor and the role does not have the right permissions to set up policies. 
+1) Ask admin to set up policies.
+2) Have to ask admin to set up the right role, delegate the task to someone with the right role.
+
+### Creating Metrics Workbook
+Custom metrics workbook needed to be set up to keep track of its performance, for example how much storage space is used up over time.
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/e5c3a7e0-41f0-42b8-ab24-1210004bafbc)
+
+Go to Monitor and open the gallery with workbook templates.
+Find and open the Storage accounts Overview template.
+Open the workbook for your storage account specifically. If you don't have a storage account anymore, you'll need to recreate it.
+Make sure the workbook only shows the data for the Last 24 hours.
+Go to editing mode to customize the workbook to only show data for your storage account only instead of any storage account.
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/62062b9c-7358-4c7e-8b6d-a855731aa56b)
+
+For example, in the Availability graph, there is no drops or peaks in the last 24 hours.
+
+### Setting Up An Alert for Storage Availability
+
+Metrics workbook helps to report on the performance of the storage account using the metrics workbook, butthere is  also need to be able to remediate issues in a timely manner. This is where alerts come in.
+
+It is important that the storage account maintains high availability, so that it is able to keep processing requests successfully. Therefore, need tp set up an alert to trigger if the average availability of the storage account is lower than 50%.
+
+Go to the right service to create alerts and create a new alert.
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/2fd02257-b39d-46ab-a720-e35963a926c7)
+
+Assign the storage account you created previously to the scope. 
+Configure the alert condition to trigger whenever the average availability is less than 50%. 
+Leave other settings at their default recommended value.
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/901a83a6-9e7b-40df-9251-74f7ef8c2ec5)
+
+Look up a list of all created alerts in the Alert rules screen of Monitor. Signal type is one of the columns in that list.
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/3e0796f8-43eb-4190-9da2-d672ec18fe6a)
+
 
