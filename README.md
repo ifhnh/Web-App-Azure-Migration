@@ -37,7 +37,29 @@ In Example scenarios, add the Advanced analytics on big data scenario to the est
 ![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/fc964f99-ef3a-492a-9c6b-d11e3b57301d)
 ![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/b8a60d62-ccc6-4bc6-96ab-ee7cb0638a32)
 ![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/82cb163c-7294-467f-96e3-c51e30563312)
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/a9c62d02-5748-4fd1-a64e-85085e464cb9)
 
 The total cost per month is less than 20,000 USD.
 
 ## Storage Accounts and Virtual Machines
+
+A storage account is needed for data ingestion, enabling storage and processing of book data. Necessary data for the recommendation model is collected and stored. These data include for example book metadata, user read history, book reviews, and ratings. The data are cleaned and prepared for the next step. A virtual machine will host and run the recommendation model, providing a secure environment for the data science team to conduct testing and development.
+
+Storage accounts are used to store data in the cloud securely. With storage account, data can be managed and shared for the ReadRadar app in Azure.
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/157b2d79-b591-4b94-be02-a1036f4c3723)
+
+For this project, a text file containing book data which is stored in Azure using Blob storage. It is best suited for cost-efficient storage of text data. 
+
+Extra Note : 
+- Blob storage can store vast amounts of unstructured data like images, videos, and text files.
+- File storage is the best solution if there is a need for file sharing and collaboration across platforms.
+- Table storage is suited for structured data where the data needs to be queried.
+- Queue storage is a special type of storage used for cases where requests or tasks need to be managed in sequence, like queuing sales orders. 
+
+Data architect has given specific requirements for creation of the storage account to upload the file with book data :
+- All resources should be assigned to a resource group
+- Standard performance should be set
+- Locally redundant storage is needed
+- All resources need to be assigned to the East US Region
+
+![image](https://github.com/ifhnh/Web-App-Azure-Migration/assets/119716158/d6999f6c-285a-4ce3-a15a-1cb6168527dc)
